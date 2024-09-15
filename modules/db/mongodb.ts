@@ -4,10 +4,12 @@ import { type Db, type DbCol } from '.'
 export default class DbMongodb implements Db {
   db: MongoDb
   constructor(url: string) {
-    const [hostport, table] = url.split('/', 2)
-    const client = new MongoClient(`mongodb://${hostport}`)
-    client.connect()
-    this.db = client.db(table)
+    const parts = url.split("/");
+    const host = parts.slice(0, -1).join("/");
+    const db = parts.at(-1);
+    const client = new MongoClient(host)
+    client.connect();
+    this.db = client.db(db)
   }
   async tables() {
     const tables = await this.db.listCollections().toArray()

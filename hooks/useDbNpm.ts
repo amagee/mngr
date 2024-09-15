@@ -17,7 +17,7 @@ let db: DbJson | DbMariadb | DbMongodb | DbPostgresql | DbSqlite
 
 export const initDb = (url: string) => {
   const [type, options] = url.split('://', 2)
-  db = new TYPES[type as DbType](options)
+  db = new TYPES[type as DbType](url)
 }
 
 export default () => db
